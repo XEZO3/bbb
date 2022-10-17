@@ -1,0 +1,55 @@
+
+
+
+
+.side-navbar {
+  width: 180px;
+  height: 100%;
+  position: fixed;
+  margin-left: -300px;
+  background-color: #100901;
+  transition: 0.5s;
+}
+.nav-link h3:hover {
+background-color: red;
+}
+
+
+.my-container {
+ margin: 0;
+ padding: 0;
+}
+
+.active-nav {
+  margin-left: 0;
+}
+
+/* for main section */
+.active-cont {
+  margin-left: 180px;
+}
+
+.dropdown-menu li {
+  position: relative;
+}
+.dropdown-menu .dropdown-submenu {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: -7px;
+}
+.dropdown-menu .dropdown-submenu-left {
+  right: 100%;
+  left: auto;
+}
+.dropdown-menu > li:hover > .dropdown-submenu {
+  display: block;
+}
+.p-2 >.nav-link{
+  color: black;
+}
+
+.my-container input {
+  border-radius: 2rem;
+  padding: 2px 20px;
+}
