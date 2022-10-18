@@ -16,44 +16,49 @@ class meetingcontroller extends controller{
     }
     function createMeeting(){
         $check = $this->meeting->checkClassMeeting(1);
+        
         if(empty($check)){
-        $meetingID = rand();
-        // $conf =[
-        //     "meetingID"=> "$meetingID",
-        //     "allowStartStopRecording"=>"true",
-        //     "attendeePW"=>"pww2r",
-        //     "moderatorPW"=>"pww3rr",
-        //     "name"=>"test123",
-            
-        // ];
-        // $data = [
-        //     "roomId"=>$meetingID,
-        //     "class_id"=>1,
+            $meetingID = rand();
+            $conf =[
+                "meetingID"=> "$meetingID",
+                "allowStartStopRecording"=>"true",
+                "attendeePW"=>"pww2r",
+                "moderatorPW"=>"pww3rr",
+                "name"=>"test123",   
+             ];
+       
+        $data = [
+            "roomId"=>$meetingID,
+            "class_id"=>1,
 
-        // ];
+        ];
 
-        // $create = $this->url."create?";
-        // $checksum="create";
-        // foreach($conf as $key =>$value){
-        //     $create .="&".$key."=".$value;
-        //     $checksum .="&".$key."=".$value;
-        // }
-        // $result = $create."&checksum=".sha1($checksum.$this->secret);
-        // $xml = simplexml_load_file($result);
-    //     if($xml->returncode == "SUCCESS"){
-    //     // $insert = $this->meeting->create($data);
-    //     if($insert){
-    //         echo"meeting is added to database";
-    //     }else{
-    //         "something went wronge";
-    //     }
-    //    }
-    //     }else{
-    //         echo"there is already a running meeting for this class";
-    //     }
+        $url=$this->generateUrl($conf,"create");
+        $xml = simplexml_load_file($url);
+        if($xml->returncode == "SUCCESS"){
+          $insert = $this->meeting->create($data);
+        if($insert){
+            echo"meeting is added to database";
+        }else{
+            "something went wronge";
+        }
+       }
+        }else{
+            $roomid= $check['roomId'];
+            $conf = [
+                "meetingID"=>$roomid,
+
+            ];
+           
+           $url=$this->generateUrl($conf,"isMeetingRunning");
+           $xml = simplexml_load_file($url);
+            if($xml->running == "true"){
+                $this->joinMeeting("1");
+            }
+        }
         
        // echo $result;
-    }
+    
 
     }
     function joinMeeting($id){
@@ -74,7 +79,17 @@ class meetingcontroller extends controller{
         // $xml = simplexml_load_file($result);
         // print_r($result);
     }
+        function generateUrl($conf,$type){
+            $url = $this->url.$type."?";
+            $checksum="$type";
+            foreach($conf as $key =>$value){
+                $url .="&".$key."=".$value;
+                $checksum .="&".$key."=".$value;
+            }
+            $result = $url."&checksum=".sha1($checksum.$this->secret);
+            return $result;
+        }
 }
-
+ 
 
 ?>

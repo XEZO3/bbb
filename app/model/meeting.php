@@ -11,5 +11,8 @@ class meeting extends model{
         function getMeetingForClass($class_id){
             return  model::db()->rows("select * from meeting where class_id = ?",[$class_id]);
         }
+        function deleteRunningMeeting($roomId){
+            return  model::db()->run('DELETE FROM `meeting` WHERE roomId = ?', [$roomId]);
+        }
 }
 ?>
