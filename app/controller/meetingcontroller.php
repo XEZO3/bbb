@@ -27,11 +27,11 @@ class meetingcontroller extends controller{
                 "name"=>"test123",   
              ];
        
-        $data = [
-            "roomId"=>$meetingID,
-            "class_id"=>1,
+                $data = [
+                    "roomId"=>$meetingID,
+                    "class_id"=>1,
 
-        ];
+                ];
 
         $url=$this->generateUrl($conf,"create");
         $xml = simplexml_load_file($url);
@@ -54,6 +54,8 @@ class meetingcontroller extends controller{
            $xml = simplexml_load_file($url);
             if($xml->running == "true"){
                 $this->joinMeeting("1");
+            }else{
+                $this->meeting->deleteRunningMeeting($roomid);
             }
         }
         
