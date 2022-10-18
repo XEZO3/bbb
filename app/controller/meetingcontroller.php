@@ -91,6 +91,9 @@ class meetingcontroller extends controller{
             $result = $url."&checksum=".sha1($checksum.$this->secret);
             return $result;
         }
+        function create(){
+            
+        }
 }
  
 
