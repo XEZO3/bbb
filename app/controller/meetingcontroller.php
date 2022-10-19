@@ -15,12 +15,9 @@ class meetingcontroller extends controller{
         $this->meeting = new meeting();
     }
     function createMeeting(){
-        $check = $this->meeting->checkClassMeeting(1);
-        
+        $check = $this->meeting->checkClassMeeting(1);      
         if(empty($check)){
-            $this->initcreate();
-            
-       
+            $this->initcreate();     
         }else{
             $roomid= $check['roomId'];
             $conf = [
@@ -31,29 +28,18 @@ class meetingcontroller extends controller{
            $url=$this->generateUrl($conf,"isMeetingRunning");
            $xml = simplexml_load_file($url);
             if($xml->running == "true"){
-                $this->joinMeeting("1");
+                $this->initjoin("1");
             }else{
                 $this->meeting->deleteRunningMeeting($roomid);
                 $this->initcreate();
             }
         }
-        
-       // echo $result;
-    
-
     }
-    function joinMeeting($id){
-        $conf =[
-            "fullName"=>"ezaldeen",
-            "meetingID"=>"1326197669",
-            "password"=>"pww2r",
-            "redirect"=>"true",
-        ];
-         $result=$this->generateUrl($conf,"join");
-         header("location:$result");
-        echo $result;
-        // $xml = simplexml_load_file($result);
-        // print_r($result);
+    function joinMeeting($classId){
+        
+        
+        $this->initjoin($classId[0]);
+        
     }
         function generateUrl($conf,$type){
             $url = $this->url.$type."?";
@@ -75,7 +61,9 @@ class meetingcontroller extends controller{
                 "allowStartStopRecording"=>"true",
                 "attendeePW"=>"pww2r",
                 "moderatorPW"=>"pww3rr",
-                "name"=>"test123",   
+                "name"=>"test123",
+                "allowStartStopRecording"=>"true",
+                "record"=>"true",   
              ];
        
                 $data = [
@@ -89,11 +77,22 @@ class meetingcontroller extends controller{
         if($xml->returncode == "SUCCESS"){
           $insert = $this->meeting->create($data);
         if($insert){
-            $this->joinMeeting("1");
+            $this->initjoin("1");
         }else{
           echo"something went wronge";
         }
     }
+        }
+        function initjoin($classId){
+            $data = $this->meeting->getMeetingForClass($classId);
+            $conf =[
+                "fullName"=>session::get("username"),
+                "meetingID"=>$data['roomId'],
+                "password"=>(session::get("permession")!=null &&session::get("permession")==1)?"pww3rr":"pww2r",
+                "redirect"=>"true",
+            ];
+             $result=$this->generateUrl($conf,"join");
+             header("location:$result");
         }
 }
  

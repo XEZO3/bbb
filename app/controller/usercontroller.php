@@ -16,6 +16,8 @@ use MVC\model\user;
         $login = $users->login($data);
         if(!empty($login)){
             session::set("userId",$login['id']);
+            session::set("username",$login['username']);
+            session::set("permession",$login['permession']);
 
         }
         echo session::get("userId");

@@ -9,7 +9,7 @@ class meeting extends model{
             return  model::db()->row("select * from meeting where class_id = ?",[$class_id]);
         }
         function getMeetingForClass($class_id){
-            return  model::db()->rows("select * from meeting where class_id = ?",[$class_id]);
+            return  model::db()->row("select * from meeting where class_id = ?",[$class_id]);
         }
         function deleteRunningMeeting($roomId){
             return  model::db()->run('DELETE FROM `meeting` WHERE roomId = ?', [$roomId]);
