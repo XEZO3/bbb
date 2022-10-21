@@ -41,7 +41,7 @@ class meetingInit{
         $conf =[
             "fullName"=>session::get("username"),
             "meetingID"=>"$meetingId",
-            "password"=>(session::get("permession")!=null &&session::get("permession")>=100)?"pww3rr":"pww2r",
+            "password"=>(session::get("permession")!=null &&session::get("permession")=="teacher")?"pww3rr":"pww2r",
             "redirect"=>"true",
         ];
          $result=self::generateUrl($conf,"join");

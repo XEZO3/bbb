@@ -20,7 +20,7 @@ class meetingcontroller extends controller{
             function createMeeting($randomId = "",$name ="meeting"){
                 $classId = $_POST['class_id'];
                 $title = ($name =="meeting")?$_POST['title']:$name;
-                if(session::get("permession")>=100){
+                if(session::get("permession")=="teacher" || session::get("permession")=="admin"){
                 $check = $this->meeting->checkClassMeeting($classId);
                 $meetingId = ($randomId==null)?rand():$randomId;
                      
@@ -65,7 +65,7 @@ class meetingcontroller extends controller{
                 meetingInit::initjoin($data['roomId']);
                 echo $data['roomId'];
                }else{
-                echo"there is no meeting right now";
+                echo"there is no meeting for this class right now";
                }
                   
             }
