@@ -8,6 +8,6 @@ class navbarcontroller extends controller{
     function __construct($for)
     {
         
-        $this->view("$for/navbar",["title"=>"teacher"]);
+        $this->view("$for/navbar",["title"=>$for]);
     }
 }

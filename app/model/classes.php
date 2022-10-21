@@ -12,5 +12,8 @@ class classes extends model{
         function find($id){
             return  model::db()->rows("select * from classes where id = ?",[$id]);
         }
+        function getUserClasses($id){
+            return  model::db()->rows("select * from users_classes where user_id = ?",[$id]);
+        }
 }
 ?>

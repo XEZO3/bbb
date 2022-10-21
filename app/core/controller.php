@@ -13,17 +13,25 @@ class controller{
        
         
     }
-    function setLanguage($lang){
-        $languages = ["ar","en","fr","ru","tr"];
+    // function setLanguage($lang){
+    //     $languages = ["ar","en","fr","ru","tr"];
 
-        if(in_array($lang[0],$languages)){
-            session::set("lang",$lang[0]);
-        }
+    //     if(in_array($lang[0],$languages)){
+    //         session::set("lang",$lang[0]);
+    //     }
        
-        echo session::get("lang");
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit;
-    }
+    //     echo session::get("lang");
+    //     header('Location: ' . $_SERVER['HTTP_REFERER']);
+    //     exit;
+    // }
+        function checkClasses($id){
+            $classList = explode(",",session::get("allowedClasses"));
+            if(in_array($id,$classList)){
+                return true;
+            }else{
+                return false;  
+            }
+        }
     
 }
 

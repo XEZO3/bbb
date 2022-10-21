@@ -50,7 +50,7 @@ class meetingInit{
     }
     static function isMeetingRunning($roomid){
         $confe = [
-            "meetingID"=>$roomid,
+            "meetingID"=>($roomid !=null)?$roomid :"t",
         ];
         $url= meetingInit::generateUrl($confe,"isMeetingRunning");
          $xml = simplexml_load_file($url);
