@@ -17,7 +17,7 @@ class app{
         //echo $_SERVER['QUERY_STRING'];
         if(!empty($_SERVER['QUERY_STRING'])){
         $url = explode("/",$_SERVER['QUERY_STRING']);
-        $this->controller = (!empty($url[0])) ? $url[0]."controller" : "homecontroller";
+        $this->controller = (!empty($url[0])) ? $url[0]."controller" : "studentcontroller";
         //echo $this->controller;
         $this->method = (!empty($url[1])) ? $url[1] : "index";
         //echo $this->method;
@@ -25,7 +25,7 @@ class app{
         $this->params = array_values($url);
         }
         else{
-            $this->controller = "homecontroller";
+            $this->controller = "studentcontroller";
             $this->method = "index";
         }
         

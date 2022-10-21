@@ -3,97 +3,97 @@
 namespace MVC\controller;
 use MVC\core\controller;
 use MVC\core\session;
+use MVC\config\meetingInit;
 use MVC\model\meeting;
 
 class meetingcontroller extends controller{
-    private $url = "https://elerning-ezo.ga/bigbluebutton/api/";
-    private $secret ="6ihY1dJA9fiWM5x1OgmGG9yC6h8QF3w17ydigIJ3EI";
-    private $redirectTo = "";
+   
     private $meeting;
-    function __construct()
-    {
-        $this->meeting = new meeting();
-    }
-    function createMeeting(){
-        $check = $this->meeting->checkClassMeeting(1);      
-        if(empty($check)){
-            $this->initcreate();     
-        }else{
-            $roomid= $check['roomId'];
-            $conf = [
-                "meetingID"=>$roomid,
-
-            ];
-           
-           $url=$this->generateUrl($conf,"isMeetingRunning");
-           $xml = simplexml_load_file($url);
-            if($xml->running == "true"){
-                $this->initjoin("1");
+            function __construct()
+            {
+                $this->meeting = new meeting();
+                if(session::get("username")==null){
+                    header("location:/user");
+                    exit;
+                }
+            }
+            function createMeeting($randomId = "",$name ="meeting"){
+                $classId = $_POST['class_id'];
+                $title = ($name =="meeting")?$_POST['title']:$name;
+                if(session::get("permession")>=100){
+                $check = $this->meeting->checkClassMeeting($classId);
+                $meetingId = ($randomId==null)?rand():$randomId;
+                     
+                if(empty($check)){
+                    $data = [
+                        "roomId"=>"$meetingId",
+                        "class_id"=>$classId,
+                    ]; 
+                   $result = meetingInit::initcreate($meetingId,$title);
+                   print_r($result);
+                   if($result->returncode == "SUCCESS"){
+                    $insert = $this->meeting->create($data);
+                    if($insert){
+                         meetingInit::initjoin($meetingId);
+                        echo"it is good";
+                    }else{
+                    echo"something went wronge";
+                    }
+                   } else{
+                    echo"ssss";
+                   }    
+                }else{
+                    $roomid= $check['roomId'];
+                    
+                
+               $result = meetingInit::isMeetingRunning($roomid);
+                    if($result == true){
+                        meetingInit::initjoin($roomid);
+                    }else{
+                        $this->meeting->deleteRunningMeeting($roomid);
+                        $this->createMeeting($meetingId,$title);
+                    }
+                }
             }else{
-                $this->meeting->deleteRunningMeeting($roomid);
-                $this->initcreate();
+                header("location:/");
             }
-        }
-    }
-    function joinMeeting($classId){
-        
-        
-        $this->initjoin($classId[0]);
-        
-    }
-        function generateUrl($conf,$type){
-            $url = $this->url.$type."?";
-            $checksum="$type";
-            foreach($conf as $key =>$value){
-                $url .="&".$key."=".$value;
-                $checksum .="&".$key."=".$value;
             }
-            $result = $url."&checksum=".sha1($checksum.$this->secret);
-            return $result;
-        }
+            function joinMeeting($classId){
+                $data = $this->meeting->getMeetingForClass($classId[0]);
+                @$isrunning = meetingInit::isMeetingRunning($data['roomId']);
+               if($isrunning == true){
+                meetingInit::initjoin($data['roomId']);
+                echo $data['roomId'];
+               }else{
+                echo"there is no meeting right now";
+               }
+                  
+            }
+        // function generateUrl($conf,$type){
+        //     $url = $this->url.$type."?";
+        //     $checksum="$type";
+        //     foreach($conf as $key =>$value){
+        //         $url .="&".$key."=".$value;
+        //         $checksum .="&".$key."=".$value;
+        //     }
+        //     $result = $url."&checksum=".sha1($checksum.$this->secret);
+        //     return $result;
+        // }
 
 
 
-        function initcreate(){
-            $meetingID = rand();
-            $conf =[
-                "meetingID"=> "$meetingID",
-                "allowStartStopRecording"=>"true",
-                "attendeePW"=>"pww2r",
-                "moderatorPW"=>"pww3rr",
-                "name"=>"test123",
-                "allowStartStopRecording"=>"true",
-                "record"=>"true",   
-             ];
-       
-                $data = [
-                    "roomId"=>$meetingID,
-                    "class_id"=>1,
-
-                ];
-
-        $url=$this->generateUrl($conf,"create");
-        $xml = simplexml_load_file($url);
-        if($xml->returncode == "SUCCESS"){
-          $insert = $this->meeting->create($data);
-        if($insert){
-            $this->initjoin("1");
-        }else{
-          echo"something went wronge";
-        }
-    }
-        }
-        function initjoin($classId){
-            $data = $this->meeting->getMeetingForClass($classId);
-            $conf =[
-                "fullName"=>session::get("username"),
-                "meetingID"=>$data['roomId'],
-                "password"=>(session::get("permession")!=null &&session::get("permession")==1)?"pww3rr":"pww2r",
-                "redirect"=>"true",
-            ];
-             $result=$this->generateUrl($conf,"join");
-             header("location:$result");
-        }
+        
+        // function initjoin($classId){
+        //     $data = $this->meeting->getMeetingForClass($classId);
+        //     $conf =[
+        //         "fullName"=>session::get("username"),
+        //         "meetingID"=>$data['roomId'],
+        //         "password"=>(session::get("permession")!=null &&session::get("permession")==1)?"pww3rr":"pww2r",
+        //         "redirect"=>"true",
+        //     ];
+        //      $result=$this->generateUrl($conf,"join");
+        //      header("location:$result");
+        // }
 }
  
 
