@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2022 at 04:51 PM
+-- Generation Time: Oct 21, 2022 at 10:52 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -43,10 +43,32 @@ INSERT INTO `classes` (`id`, `class_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `meeting`
+-- Table structure for table `meetings`
 --
 
-CREATE TABLE `meeting` (
+CREATE TABLE `meetings` (
+  `id` int(11) NOT NULL,
+  `meetingID` varchar(255) NOT NULL,
+  `class_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `meetings`
+--
+
+INSERT INTO `meetings` (`id`, `meetingID`, `class_id`, `user_id`) VALUES
+(1, '422740379', 1, 3),
+(2, '498425737', 1, 3),
+(3, '1974421124', 2, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `running_meeting`
+--
+
+CREATE TABLE `running_meeting` (
   `id` int(11) NOT NULL,
   `roomId` char(255) NOT NULL,
   `class_id` int(11) NOT NULL,
@@ -54,11 +76,12 @@ CREATE TABLE `meeting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `meeting`
+-- Dumping data for table `running_meeting`
 --
 
-INSERT INTO `meeting` (`id`, `roomId`, `class_id`, `create_time`) VALUES
-(14, '574182965', 1, '2022-10-14 12:12:53');
+INSERT INTO `running_meeting` (`id`, `roomId`, `class_id`, `create_time`) VALUES
+(45, '498425737', 1, '2022-10-21 15:44:49'),
+(46, '1974421124', 2, '2022-10-21 20:15:55');
 
 -- --------------------------------------------------------
 
@@ -71,7 +94,7 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `permession` int(11) NOT NULL
+  `permession` enum('student','teacher','admin','') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -79,7 +102,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `permession`) VALUES
-(1, 'ezaldeen', '1123', '123', 1);
+(3, 'ezaldeen', 'e@e.com', '123', 'teacher'),
+(4, 'zz', 'zz', '123', 'student');
 
 -- --------------------------------------------------------
 
@@ -93,6 +117,15 @@ CREATE TABLE `users_classes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `users_classes`
+--
+
+INSERT INTO `users_classes` (`user_id`, `class_id`) VALUES
+(3, 1),
+(3, 2),
+(4, 2);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -103,9 +136,17 @@ ALTER TABLE `classes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `meeting`
+-- Indexes for table `meetings`
 --
-ALTER TABLE `meeting`
+ALTER TABLE `meetings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `class_id` (`class_id`,`user_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `running_meeting`
+--
+ALTER TABLE `running_meeting`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `class_id_2` (`class_id`),
   ADD KEY `class_id` (`class_id`);
@@ -134,26 +175,39 @@ ALTER TABLE `classes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `meeting`
+-- AUTO_INCREMENT for table `meetings`
 --
-ALTER TABLE `meeting`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+ALTER TABLE `meetings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `running_meeting`
+--
+ALTER TABLE `running_meeting`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `meeting`
+-- Constraints for table `meetings`
 --
-ALTER TABLE `meeting`
-  ADD CONSTRAINT `meeting_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `meetings`
+  ADD CONSTRAINT `meetings_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `meetings_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `running_meeting`
+--
+ALTER TABLE `running_meeting`
+  ADD CONSTRAINT `running_meeting_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users_classes`
