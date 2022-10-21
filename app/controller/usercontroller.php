@@ -6,7 +6,13 @@ use MVC\core\session;
 use MVC\model\user;
 
  class usercontroller extends controller{
-   
+   function __construct()
+   {
+    if(session::get("userId") !=null){
+        $page = session::get("permession");
+        header("location:/$page");
+    }
+   }
     function login(){
         $users = new user;
         $data=[

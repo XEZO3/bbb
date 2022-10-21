@@ -7,10 +7,15 @@ use MVC\model\classes;
 class studentcontroller extends controller{
     function __construct()
     {
-        if(session::get("username")==null){
+        if(session::get("username")!=null){
+            if(session::get("permession")!="student"){
+              $page = session::get("permession") ;
+              header("location:/$page");
+            }
+          }else{
             header("location:/user");
-            exit;
-        }
+          }
+        
     }
     function index(){ 
         $navbar = new navbarcontroller("shared");
@@ -23,5 +28,9 @@ class studentcontroller extends controller{
     function class($id){
         $navbar = new navbarcontroller("shared");
         $this->view("students/class",['id'=>$id[0]]);
+    }
+    function join($id){
+        $navbar = new navbarcontroller("shared");
+        $this->view("students/join",['id'=>$id[0]]);
     }
 }

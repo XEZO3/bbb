@@ -4,14 +4,17 @@ namespace MVC\controller;
 use MVC\core\controller;
 use MVC\core\session;
 use MVC\config\meetingInit;
-use MVC\model\meeting;
+use MVC\model\meetings;
+use MVC\model\running_meeting;
 
 class meetingcontroller extends controller{
    
     private $meeting;
+    private $history;
             function __construct()
             {
-                $this->meeting = new meeting();
+                $this->meeting = new running_meeting();
+                $this->history = new meetings();
                 if(session::get("username")==null){
                     header("location:/user");
                     exit;
@@ -33,9 +36,16 @@ class meetingcontroller extends controller{
                    print_r($result);
                    if($result->returncode == "SUCCESS"){
                     $insert = $this->meeting->create($data);
-                    if($insert){
+                    $history = new meetings();
+                    $archive = [
+                        "meetingID"=>"$meetingId",
+                        "class_id"=>$classId,
+                        "user_id"=>session::get("userId")
+                    ];
+                    $history = $this->history->create($archive);
+                    if($insert && $history){
                          meetingInit::initjoin($meetingId);
-                        echo"it is good";
+                        
                     }else{
                     echo"something went wronge";
                     }
