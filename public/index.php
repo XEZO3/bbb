@@ -10,7 +10,7 @@ define("VIEW",APP.DS.'view'.DS);
 define("SHARED",VIEW.DS."shared");
 define("CORE",APP.DS.'core');
 define("MODEL",APP.DS.'model');
-define("CSS",'/task1mvc/public');
+define("CSS",'/');
 define("PATH","/");
 define("error",[
     'ar'=>"لا يتوفر بيانات" ,

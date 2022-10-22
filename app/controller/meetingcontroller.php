@@ -79,6 +79,13 @@ class meetingcontroller extends controller{
                }
                   
             }
+            function GetRecords($roomId){
+                
+                $data =meetingInit::initRecording($roomId);
+                
+                return $data;
+                
+            }
         // function generateUrl($conf,$type){
         //     $url = $this->url.$type."?";
         //     $checksum="$type";

@@ -5,22 +5,18 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col col-md-auto d-flex justify-content-center">
+        <a href="<?=PATH?>student/join/<?=$id?>">
         <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">live</h5>
-                
-                <a href="<?=PATH?>student/join/<?=$id?>" class="btn btn-primary">join</a>
-            </div>
-            </div> 
+        <img src="<?=PATH?>micons/live-streaming.png" alt="notfound" class="card-img-top" style="width:100%;height:20em" /> 
+        </div> 
+        </a>
         </div>
         <div class="col col-md-auto d-flex justify-content-center">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Records</h5>
-                
-                <a href="<?=PATH?>student/record/<?=$id?>" class="btn btn-primary">join</a>
-            </div>
+            <a href="<?=PATH?>student/recordShow/<?=$id?>">
+            <div class="card" style="width: 18rem;">
+            <img src="<?=PATH?>micons/video.png" alt="notfound" class="card-img-top" style="width:100%;height:20em" /> 
             </div> 
+            </a>
         </div>
     </div>
 </div>

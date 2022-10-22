@@ -60,6 +60,21 @@ class meetingInit{
            return false;
         }
     }
+    static function initRecording($roomId){
+        $conf=[
+            "meetingID"=>$roomId ,
+        ];
+        $result=self::generateUrl($conf,"getRecordings");
+        $xml = simplexml_load_file($result);
+        if($xml->returncode == "SUCCESS" && $xml->messageKey !="noRecordings"){
+            return $data =[
+                'url'=> (string) $xml->recordings->recording->playback->format->url,
+                'name'=> (string)$xml->recordings->recording->name
+        ];
+        }else{
+            return "";
+        }
+    }
 }
 
 ?>

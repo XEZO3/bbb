@@ -5,6 +5,7 @@ use MVC\config\meetingInit;
 use MVC\core\controller;
 use MVC\core\session;
 use MVC\model\classes;
+use MVC\model\recordings;
 use MVC\model\running_meeting;
 
 class studentcontroller extends controller{
@@ -63,5 +64,24 @@ class studentcontroller extends controller{
     }
       
       
+    }
+    function recordShow($id){
+      if($this->checkClasses($id[0])){
+      $navbar = new navbarcontroller("shared");
+      $record = new recordings();
+      $meeting = new meetingcontroller();
+      $classes = $record->getClassRecords($id[0]);
+      $data=[
+        
+      ];
+      foreach($classes as $class){
+        if(!empty($meeting->GetRecords($class['meetingID']))){
+        array_push($data,$meeting->GetRecords($class['meetingID']));
+        }
+      }
+      $this->view("students/records",['data'=>$data]);
+    }else{
+      header("location:/");
+    }
     }
 }

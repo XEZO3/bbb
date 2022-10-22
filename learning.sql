@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2022 at 10:52 PM
+-- Generation Time: Oct 22, 2022 at 09:13 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -43,6 +43,17 @@ INSERT INTO `classes` (`id`, `class_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `classes_stacks`
+--
+
+CREATE TABLE `classes_stacks` (
+  `class_id` int(11) NOT NULL,
+  `stack_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `meetings`
 --
 
@@ -60,7 +71,9 @@ CREATE TABLE `meetings` (
 INSERT INTO `meetings` (`id`, `meetingID`, `class_id`, `user_id`) VALUES
 (1, '422740379', 1, 3),
 (2, '498425737', 1, 3),
-(3, '1974421124', 2, 3);
+(3, '1974421124', 2, 3),
+(4, '1744535980', 1, 3),
+(5, '218864154', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -80,8 +93,20 @@ CREATE TABLE `running_meeting` (
 --
 
 INSERT INTO `running_meeting` (`id`, `roomId`, `class_id`, `create_time`) VALUES
-(45, '498425737', 1, '2022-10-21 15:44:49'),
-(46, '1974421124', 2, '2022-10-21 20:15:55');
+(46, '1974421124', 2, '2022-10-21 20:15:55'),
+(48, '218864154', 1, '2022-10-22 13:21:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stacks`
+--
+
+CREATE TABLE `stacks` (
+  `id` int(11) NOT NULL,
+  `Name` varchar(20) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -103,7 +128,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `permession`) VALUES
 (3, 'ezaldeen', 'e@e.com', '123', 'teacher'),
-(4, 'zz', 'zz', '123', 'student');
+(4, 'zz', 'zz', '123', 'student'),
+(5, 'ahmed', '3@3.com', '123', 'student');
 
 -- --------------------------------------------------------
 
@@ -123,7 +149,8 @@ CREATE TABLE `users_classes` (
 INSERT INTO `users_classes` (`user_id`, `class_id`) VALUES
 (3, 1),
 (3, 2),
-(4, 2);
+(4, 2),
+(5, 1);
 
 --
 -- Indexes for dumped tables
@@ -134,6 +161,13 @@ INSERT INTO `users_classes` (`user_id`, `class_id`) VALUES
 --
 ALTER TABLE `classes`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `classes_stacks`
+--
+ALTER TABLE `classes_stacks`
+  ADD KEY `class_id` (`class_id`,`stack_id`),
+  ADD KEY `stack_id` (`stack_id`);
 
 --
 -- Indexes for table `meetings`
@@ -150,6 +184,13 @@ ALTER TABLE `running_meeting`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `class_id_2` (`class_id`),
   ADD KEY `class_id` (`class_id`);
+
+--
+-- Indexes for table `stacks`
+--
+ALTER TABLE `stacks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -178,23 +219,36 @@ ALTER TABLE `classes`
 -- AUTO_INCREMENT for table `meetings`
 --
 ALTER TABLE `meetings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `running_meeting`
 --
 ALTER TABLE `running_meeting`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- AUTO_INCREMENT for table `stacks`
+--
+ALTER TABLE `stacks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `classes_stacks`
+--
+ALTER TABLE `classes_stacks`
+  ADD CONSTRAINT `classes_stacks_ibfk_1` FOREIGN KEY (`stack_id`) REFERENCES `stacks` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `classes_stacks_ibfk_2` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `meetings`
@@ -208,6 +262,12 @@ ALTER TABLE `meetings`
 --
 ALTER TABLE `running_meeting`
   ADD CONSTRAINT `running_meeting_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `stacks`
+--
+ALTER TABLE `stacks`
+  ADD CONSTRAINT `stacks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users_classes`
