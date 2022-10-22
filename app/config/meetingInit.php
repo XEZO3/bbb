@@ -12,7 +12,7 @@ class meetingInit{
             "allowStartStopRecording"=>"true",
             "attendeePW"=>"pww2r",
             "moderatorPW"=>"pww3rr",
-            "name"=>"$title",
+            "name"=>str_replace(" ","-","$title"),
             "allowStartStopRecording"=>"true",
             "record"=>"true",
             "logoutURL"=>self::$redirectTo   

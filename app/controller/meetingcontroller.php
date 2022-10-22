@@ -21,8 +21,8 @@ class meetingcontroller extends controller{
                 }
             }
             function createMeeting($randomId = "",$name ="meeting"){
-                $classId = $_POST['class_id'];
-                $title = ($name =="meeting")?$_POST['title']:$name;
+                $classId = htmlspecialchars($_POST['class_id']);
+                $title = ($name =="meeting")?htmlspecialchars($_POST['title']):htmlspecialchars($name);
                 if(session::get("permession")=="teacher" || session::get("permession")=="admin"){
                 $check = $this->meeting->checkClassMeeting($classId);
                 $meetingId = ($randomId==null)?rand():$randomId;
@@ -31,6 +31,7 @@ class meetingcontroller extends controller{
                     $data = [
                         "roomId"=>"$meetingId",
                         "class_id"=>$classId,
+                        
                     ]; 
                    $result = meetingInit::initcreate($meetingId,$title);
                    print_r($result);
@@ -50,7 +51,7 @@ class meetingcontroller extends controller{
                     echo"something went wronge";
                     }
                    } else{
-                    echo"ssss";
+                    echo"<script>alert('please check the title of the meeting not to be in arabic')</script>";;
                    }    
                 }else{
                     $roomid= $check['roomId'];
