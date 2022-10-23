@@ -4,6 +4,8 @@ include(SHARED.DS."header.php");
 <style>
 body{
         background-image: url("https://d.top4top.io/p_2478tdptc1.png");
+        background-size:cover;
+        background-repeat: no-repeat;
     }
     .btn{
         background-color: #62C0E9;
@@ -11,7 +13,7 @@ body{
         font-weight: bold;
     }
 </style>
-<div class="container" style="width: 30%;margin-top:10%;padding:10px">
+<div class="container" style="width: 35%;margin-top:10%;padding:10px">
 <h1>Welcome Back</h1>
 <small class="text-secondary mb-5">login to continue</small>
     <form method="post" class="mt-5" action="user/login">
