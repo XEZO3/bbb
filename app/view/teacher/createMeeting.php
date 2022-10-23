@@ -2,7 +2,7 @@
 
 
 
-<div class="container" style="margin-top:13rem;">
+<div class="container" style="margin-top:7rem;">
     <div class="row justify-content-center">
         <div class="col-6">
         <form method="POST" action="<?=PATH?>meeting/createMeeting">
