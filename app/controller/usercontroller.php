@@ -9,7 +9,7 @@ use MVC\model\user;
  class usercontroller extends controller{
    function __construct()
    {
-    if(session::get("userId") !=null){
+    if(session::get("username") !=null){
         $page = session::get("permession");
         header("location:/$page");
     }
