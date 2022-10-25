@@ -3,7 +3,7 @@
         <?php foreach($data as $row): ?>
         <div class="col col-md-auto d-flex justify-content-center">
         <div class="card text-center" style="width: 20rem;">
-        <img src="<?=PATH?>micons/exam (1).png" class="card-img-top" alt="...">
+        <img src="https://expertcode.net/upload/course/5.jpeg" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title"><?=$row['class_name']?></h5>
                 
