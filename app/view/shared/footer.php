@@ -1,4 +1,4 @@
-<footer class="text-center text-white footer mt-auto" style="background-color: #1A2B55;">
+<footer class="text-center text-white footer mt-auto" style="background-color: #23587A;">
   <!-- Grid container -->
   <div class="container pt-4">
     <!-- Section: Social media -->

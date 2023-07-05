@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 namespace MVC\config;
 use MVC\core\session;
 class meetingInit{
@@ -77,4 +77,4 @@ class meetingInit{
     }
 }
 
-?>
+?> -->
